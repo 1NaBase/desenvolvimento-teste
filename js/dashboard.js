@@ -1,20 +1,5 @@
-const leadsList = document.querySelector(".leads-list");
-
-// Função que busca do banco (via API)
-async function fetchLeads() {
-  try {
-    const res = await fetch("/api/leads");
-    const leads = await res.json();
-    renderLeads(leads);
-  } catch (err) {
-    console.error("Erro ao carregar leads:", err);
-    leadsList.innerHTML = "<p class='text-red-500'>Erro ao carregar leads.</p>";
-  }
-}
-
-// Função que renderiza no HTML
 function renderLeads(leads) {
-  leadsList.innerHTML = ""; // limpa antes
+  leadsList.innerHTML = "";
 
   if (!leads || leads.length === 0) {
     leadsList.innerHTML = "<p>Nenhum lead encontrado.</p>";
@@ -22,26 +7,37 @@ function renderLeads(leads) {
   }
 
   leads.forEach((lead) => {
-    const article = document.createElement("article");
-    article.className = "lead-note";
-    article.dataset.id = lead.id;
+    const card = document.createElement("article");
+    card.className = "lead-note";
+    card.setAttribute("data-id", lead.lead_id);
 
-    article.innerHTML = `
+    // Define a classe de status
+    let statusClass = "status-novo";
+    let statusText = lead.status || "Novo";
+    if (statusText.toLowerCase().includes("contato")) statusClass = "status-contato";
+    if (statusText.toLowerCase().includes("proposta")) statusClass = "status-proposta";
+    if (statusText.toLowerCase().includes("fechado")) statusClass = "status-fechado";
+
+    // Comentários
+    let comentariosHTML = "";
+    if (lead.ultima_msg) {
+      comentariosHTML += `<li class="lead-comment">Última mensagem: ${lead.ultima_msg}</li>`;
+    }
+    if (lead.followUp) {
+      comentariosHTML += `<li class="lead-comment">Follow-up: ${lead.followUp}</li>`;
+    }
+
+    card.innerHTML = `
       <input type="checkbox" class="lead-select" title="Selecionar lead">
       <div class="lead-meta">
         <h3>${lead.nome}</h3>
         <p><strong>Email:</strong> ${lead.email}</p>
         <p><strong>Telefone:</strong> ${lead.telefone}</p>
         <p class="message">${lead.mensagem}</p>
-        <span class="status status-${lead.status}" data-status="${lead.status}">
-          ${formatarStatus(lead.status)}
-        </span>
-        <ul class="lead-comments hidden">
-          ${
-            lead.comentarios
-              ? lead.comentarios.map(c => `<li class="lead-comment">${c}</li>`).join("")
-              : ""
-          }
+        <span class="status ${statusClass}" data-status="${lead.status || 'novo'}">${statusText}</span>
+
+        <ul class="lead-comments ${comentariosHTML ? '' : 'hidden'}">
+          ${comentariosHTML}
         </ul>
       </div>
       <div class="actions">
@@ -51,22 +47,10 @@ function renderLeads(leads) {
       </div>
     `;
 
-    leadsList.appendChild(article);
+    leadsList.appendChild(card);
   });
 }
 
-// Traduz o status para exibir bonito
-function formatarStatus(status) {
-  switch (status) {
-    case "novo": return "Novo";
-    case "contato": return "Em Contato";
-    case "proposta": return "Proposta Enviada";
-    case "fechado": return "Fechado";
-    default: return "Novo";
-  }
-}
 
-// Carregar quando a página abrir
-fetchLeads();
 
 
