@@ -421,10 +421,24 @@ async function carregarLeads() {
     }
 }
 document.addEventListener("DOMContentLoaded", carregarLeads);
+
+statusSelect.addEventListener("change", () => {
+  const selectedStatus = statusSelect.value; // novo, contato, proposta, fechado
+
+  document.querySelectorAll(".lead-note").forEach(lead => {
+    const leadStatus = lead.querySelector(".status").classList;
+    if (selectedStatus === "" || leadStatus.contains(`status-${selectedStatus}`)) {
+      lead.style.display = "flex";
+    } else {
+      lead.style.display = "none";
+    }
+  });
+});
 </script>
 
 </body>
 </html>
+
 
 
 
