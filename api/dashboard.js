@@ -1,31 +1,14 @@
-async function carregarLeads() {
+import { createClient } from "@supabase/supabase-js";
+
+const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_KEY);
+
+export default async function handler(req, res) {
   try {
-    const res = await fetch("/api/leads");
-    const json = await res.json();
+    const { data, error } = await supabase.from("leads").select("*");
+    if (error) return res.status(500).json({ message: error.message });
 
-    const tbody = document.querySelector("table.crm-table tbody");
-    tbody.innerHTML = "";
-
-    json.leads.forEach((lead) => {
-      const tr = document.createElement("tr");
-      tr.innerHTML = `
-        <td>${lead.nome}</td>
-        <td>${lead.email}</td>
-        <td>${lead.telefone}</td>
-        <td class="max-w-xs truncate">${lead.mensagem}</td>
-        <td><span class="status-badge status-${lead.status}">${lead.status}</span></td>
-        <td>${new Date(lead.created_at).toLocaleDateString()}</td>
-        <td>
-          <button class="text-blue-400 hover:text-blue-300 mr-2">Editar</button>
-          <button class="text-purple-400 hover:text-purple-300">Detalhes</button>
-        </td>
-      `;
-      tbody.appendChild(tr);
-    });
+    return res.status(200).json({ leads: data });
   } catch (err) {
-    console.error("Erro ao carregar leads:", err);
+    return res.status(500).json({ message: err.message });
   }
 }
-
-// Carrega os leads ao abrir a página
-window.addEventListener("DOMContentLoaded", carregarLeads);
