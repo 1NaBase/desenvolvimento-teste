@@ -1,0 +1,45 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter&family=Orbitron:wght@700&display=swap');
+
+.font-orbitron {
+  font-family: 'Orbitron', sans-serif;
+}
+
+.font-inter {
+  font-family: 'Inter', sans-serif;
+}
+
+.neon-purple {
+  color: #8b5cf6;
+  text-shadow:
+    0 0 5px #8b5cf6,
+    0 0 10px #8b5cf6,
+    0 0 20px #7c3aed,
+    0 0 40px #7c3aed;
+}
+
+.btn-neon {
+  background-color: #8b5cf6;
+  box-shadow:
+    0 0 5px #8b5cf6,
+    0 0 10px #8b5cf6,
+    0 0 20px #7c3aed,
+    0 0 40px #7c3aed;
+  transition: all 0.3s ease;
+}
+
+.btn-neon:hover,
+.btn-neon:focus {
+  background-color: #5b21b6;
+  box-shadow:
+    0 0 10px #5b21b6,
+    0 0 20px #5b21b6,
+    0 0 30px #4c1d95,
+    0 0 50px #4c1d95;
+  outline: none;
+  transform: translateY(-2px);
+}
+
+input:focus {
+  outline: 2px solid #8b5cf6;
+  outline-offset: 2px;
+}

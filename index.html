@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="bg-gray-900 text-gray-200">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Login - Virtuallure</title>
+
+  <!-- CSS externo -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Supabase JS (cdn) -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/supabase.min.js"></script>
+
+  <!-- JS do login -->
+  <script type="module" src="js/login.js"></script>
+</head>
+<body class="font-inter flex items-center justify-center min-h-screen px-4">
+
+  <main class="bg-gray-800 rounded-3xl shadow-2xl max-w-md w-full p-10">
+    <header class="flex items-center justify-center mb-8 space-x-3">
+      <svg class="w-12 h-12 neon-purple" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+        <path d="M2 17l10 5 10-5"></path>
+        <path d="M2 12l10 5 10-5"></path>
+      </svg>
+      <h1 class="text-4xl font-orbitron neon-purple font-bold select-none">Virtuallure</h1>
+    </header>
+
+    <form aria-label="Formulário de login" class="space-y-6" id="loginForm">
+      <div>
+        <label for="login" class="block mb-2 font-semibold text-gray-300">Login</label>
+        <input type="text" id="login" name="login" required placeholder="Digite seu login" autocomplete="username" class="w-full rounded-xl bg-gray-700 border border-gray-600 px-4 py-3 text-gray-200 placeholder-gray-400 focus:border-purple-600 focus:ring-2 focus:ring-purple-500 transition" />
+      </div>
+      <div>
+        <label for="senha" class="block mb-2 font-semibold text-gray-300">Senha</label>
+        <input type="password" id="senha" name="senha" required placeholder="Digite sua senha" autocomplete="current-password" class="w-full rounded-xl bg-gray-700 border border-gray-600 px-4 py-3 text-gray-200 placeholder-gray-400 focus:border-purple-600 focus:ring-2 focus:ring-purple-500 transition" />
+      </div>
+      <button type="submit" class="btn-neon w-full font-semibold rounded-xl px-6 py-4 text-lg shadow-lg focus:outline-none focus:ring-4 focus:ring-purple-500/60" aria-label="Entrar">
+        Entrar
+      </button>
+    </form>
+  </main>
+
+</body>
+</html>

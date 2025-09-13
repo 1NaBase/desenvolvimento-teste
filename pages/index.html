@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth bg-white text-gray-900 font-inter">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dashboard CRM - Virtuallure</title>
+  <meta name="description" content="Dashboard CRM para gerenciamento de leads e clientes da Virtuallure." />
+  <link href="https://fonts.googleapis.com/css2?family=Inter&family=Orbitron:wght@700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script type="module" src="../js/dashboard.js"></script>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="flex flex-col min-h-screen bg-white text-gray-900">
+
+  <!-- Header -->
+  <header class="fixed top-0 left-0 w-full bg-[#1e293b] border-b border-[#334155] z-50 shadow">
+    <div class="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
+      <a href="/" class="flex items-center space-x-2 select-none" aria-label="Virtuallure - Home">
+        <svg class="w-10 h-10 neon-purple" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+          <path d="M2 17l10 5 10-5"></path>
+          <path d="M2 12l10 5 10-5"></path>
+        </svg>
+        <span class="text-2xl font-orbitron font-bold neon-purple">Virtuallure</span>
+      </a>
+
+      <nav class="hidden md:block" aria-label="Menu principal">
+        <ul class="flex space-x-8 font-semibold tracking-wide text-lg text-white">
+          <li><a href="/" class="neon-link hover:underline focus:underline">Home</a></li>
+          <li><a href="#dashboard" class="neon-link hover:underline focus:underline">Dashboard</a></li>
+          <li><a href="#leads" class="neon-link hover:underline focus:underline">Leads</a></li>
+          <li><a href="#funil" class="neon-link hover:underline focus:underline">Funil</a></li>
+        </ul>
+      </nav>
+
+      <button class="md:hidden text-white hover:text-purple-300 focus:outline-none focus:text-purple-300" aria-label="Abrir menu" aria-expanded="false" id="menu-toggle">
+        <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <main class="flex-grow pt-24 pb-12 max-w-7xl mx-auto px-6">
+
+    <!-- Dashboard Header -->
+    <section id="dashboard" class="mb-8 flex flex-col md:flex-row justify-between items-center gap-4">
+      <h1 class="text-3xl md:text-4xl font-orbitron font-bold neon-blue">Dashboard CRM</h1>
+      <div class="flex space-x-4">
+        <button class="btn-neon btn-delete font-semibold rounded-lg px-6 py-3 shadow-lg focus:outline-none focus:ring-4 focus:ring-red-500/60">
+          Excluir Lead
+        </button>
+        <button class="btn-neon font-semibold rounded-lg px-6 py-3 shadow-lg focus:outline-none focus:ring-4 focus:ring-purple-500/60">
+          Exportar Dados
+        </button>
+        <button class="bg-blue-600 hover:bg-blue-700 font-semibold rounded-lg px-6 py-3 shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-500/60 neon-blue text-white">
+          Novo Lead
+        </button>
+      </div>
+    </section>
+
+    <!-- Stats Overview -->
+    <section class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10">
+      <div class="stat-card">
+        <div class="text-3xl font-bold neon-blue mb-2">24</div>
+        <div>Leads Hoje</div>
+      </div>
+      <div class="stat-card">
+        <div class="text-3xl font-bold neon-purple mb-2">156</div>
+        <div>Leads Semana</div>
+      </div>
+      <div class="stat-card">
+        <div class="text-3xl font-bold text-yellow-500 mb-2">42%</div>
+        <div>Taxa Conversão</div>
+      </div>
+      <div class="stat-card">
+        <div class="text-3xl font-bold text-green-500 mb-2">18</div>
+        <div>Fechamentos</div>
+      </div>
+    </section>
+
+    <!-- Filter Section -->
+    <section class="filter-section mb-10">
+      <h2 class="text-xl font-semibold neon-purple mb-4">Filtrar Leads</h2>
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div>
+          <label class="block mb-2 text-gray-900">Status</label>
+          <select class="w-full rounded-md bg-white border border-gray-300 focus:border-purple-600 text-gray-900 px-3 py-2 outline-none">
+            <option value="">Todos</option>
+            <option value="novo">Novo</option>
+            <option value="contato">Em Contato</option>
+            <option value="proposta">Proposta Enviada</option>
+            <option value="fechado">Fechado</option>
+          </select>
+        </div>
+        <div>
+          <label class="block mb-2 text-gray-900">Data Início</label>
+          <input type="date" class="w-full rounded-md bg-white border border-gray-300 focus:border-purple-600 text-gray-900 px-3 py-2 outline-none" />
+        </div>
+        <div>
+          <label class="block mb-2 text-gray-900">Data Fim</label>
+          <input type="date" class="w-full rounded-md bg-white border border-gray-300 focus:border-purple-600 text-gray-900 px-3 py-2 outline-none" />
+        </div>
+        <div>
+          <label class="block mb-2 text-gray-900">Buscar</label>
+          <input type="text" placeholder="Nome ou email..." class="w-full rounded-md bg-white border border-gray-300 focus:border-purple-600 text-gray-900 px-3 py-2 outline-none" />
+        </div>
+      </div>
+      <div class="mt-4 flex justify-end">
+        <button class="btn-neon font-semibold rounded-lg px-6 py-2 shadow-lg focus:outline-none focus:ring-4 focus:ring-purple-500/60">
+          Aplicar Filtros
+        </button>
+      </div>
+    </section>
+
+    <!-- Leads List (Dinamicamente preenchida pelo JS) -->
+    <section id="leads" aria-label="Leads recentes" class="leads-list mb-8">
+      <!-- Leads serão carregados dinamicamente via dashboard.js -->
+    </section>
+
+    <!-- Pagination -->
+    <section class="pagination" aria-label="Navegação de Leads">
+      <button class="pagination-btn" disabled>Anterior</button>
+      <span class="pagination-info">Página 1</span>
+      <button class="pagination-btn">Próximo</button>
+    </section>
+
+  </main>
+
+  <footer class="bg-[#1e293b] text-white text-center py-4 mt-auto">
+    <p>&copy; 2023 Virtuallure. Todos os direitos reservados.</p>
+  </footer>
+
+  <script type="module" src="../js/menu.js"></script>
+
+</body>
+</html>
