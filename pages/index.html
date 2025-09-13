@@ -1,558 +1,181 @@
 <!DOCTYPE html>
 <html lang="pt-BR" class="scroll-smooth bg-white text-gray-900 font-inter">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Dashboard CRM - Virtuallure</title>
-  <meta name="description" content="Dashboard CRM para gerenciamento de leads e clientes da Virtuallure." />
-  <link href="https://fonts.googleapis.com/css2?family=Inter&family=Orbitron:wght@700&display=swap" rel="stylesheet" />
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="css/style.css">
-  <link rel="icon" href="favicon.ico" type="image/x-icon">
-  
-  <style>
-    /* Pequenos estilos utilitários para visualização */
-    .lead-note { display: flex; align-items: flex-start; gap: 12px; padding: 12px; border: 1px solid #e5e7eb; border-radius: 8px; margin-bottom: 12px; }
-    .lead-meta { flex: 1; }
-    .actions { display:flex; gap:8px; align-items:center; }
-    .lead-comments { margin-top:8px; padding-left: 18px; }
-    .btn-small { background:#f3f4f6; padding:6px 10px; border-radius:6px; font-size:14px; }
-    .btn-danger { background:#ef4444; color:white; padding:6px 10px; border-radius:6px; }
-    .btn-primary { background:#2563eb; color:white; padding:6px 10px; border-radius:6px; }
-    .status { font-weight:600; padding:4px 8px; border-radius:999px; font-size:13px; display:inline-block; }
-    .status-novo { background:#eef2ff; color:#3730a3; }
-    .status-contato { background:#fff7ed; color:#92400e; }
-    .status-proposta { background:#fef3c7; color:#78350f; }
-    .status-fechado { background:#ecfdf5; color:#065f46; }
-    .lead-select { transform: scale(1.1); }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Dashboard CRM - Virtuallure</title>
+<meta name="description" content="Dashboard CRM para gerenciamento de leads e clientes da Virtuallure." />
+<link href="https://fonts.googleapis.com/css2?family=Inter&family=Orbitron:wght@700&display=swap" rel="stylesheet" />
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="css/style.css">
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<style>
+/* Estilos utilitários */
+.lead-note { display: flex; align-items: flex-start; gap: 12px; padding: 12px; border: 1px solid #e5e7eb; border-radius: 8px; margin-bottom: 12px; }
+.lead-meta { flex: 1; }
+.actions { display:flex; gap:8px; align-items:center; }
+.lead-comments { margin-top:8px; padding-left: 18px; }
+.btn-small { background:#f3f4f6; padding:6px 10px; border-radius:6px; font-size:14px; }
+.btn-danger { background:#ef4444; color:white; padding:6px 10px; border-radius:6px; }
+.btn-primary { background:#2563eb; color:white; padding:6px 10px; border-radius:6px; }
+.status { font-weight:600; padding:4px 8px; border-radius:999px; font-size:13px; display:inline-block; }
+.status-novo { background:#eef2ff; color:#3730a3; }
+.status-contato { background:#fff7ed; color:#92400e; }
+.status-proposta { background:#fef3c7; color:#78350f; }
+.status-fechado { background:#ecfdf5; color:#065f46; }
+.lead-select { transform: scale(1.1); }
+</style>
 </head>
 <body class="flex flex-col min-h-screen bg-white text-gray-900">
 
-  <!-- Header -->
-  <header class="fixed top-0 left-0 w-full bg-[#1e293b] border-b border-[#334155] z-50 shadow">
-    <div class="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
-      <a href="/" class="flex items-center space-x-2 select-none" aria-label="Virtuallure - Home">
-        <svg class="w-10 h-10 neon-purple" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
-          <path d="M2 17l10 5 10-5"></path>
-          <path d="M2 12l10 5 10-5"></path>
-        </svg>
-        <span class="text-2xl font-orbitron font-bold neon-purple">Virtuallure</span>
-      </a>
-
-      <nav class="hidden md:block" aria-label="Menu principal">
-        <ul class="flex space-x-8 font-semibold tracking-wide text-lg">
-          <li><a href="https://virtuallure.com.br" class="neon-link" target="_blank">Home</a></li>
-          <li><a href="#dashboard" class="neon-link">Dashboard</a></li>
-          <li><a href="#leads" class="neon-link">Leads</a></li>
-          <li><a href="#funil" class="neon-link">Funil</a></li>
-        </ul>
-      </nav>
-
-      <button class="md:hidden text-white hover:text-purple-300 focus:outline-none focus:text-purple-300" aria-label="Abrir menu" aria-expanded="false" id="menu-toggle">
-        <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"></path>
-        </svg>
-      </button>
-    </div>
-  </header>
-
-  <main class="flex-grow pt-24 pb-12 max-w-7xl mx-auto px-6">
-
-    <!-- Dashboard Header -->
-    <section id="dashboard" class="mb-8 flex flex-col md:flex-row justify-between items-center gap-4">
-      <h1 class="text-3xl md:text-4xl font-orbitron font-bold neon-blue">Dashboard CRM</h1>
-      <div class="flex space-x-4">
-        <button id="btn-delete-selected" class="btn-neon btn-delete font-semibold rounded-lg px-6 py-3 shadow-lg focus:outline-none focus:ring-4 focus:ring-red-500/60">Excluir Selecionados</button>
-        <button id="btn-export" class="btn-neon font-semibold rounded-lg px-6 py-3 shadow-lg focus:outline-none focus:ring-4 focus:ring-purple-500/60">Exportar Dados</button>
-        <button id="btn-new-lead" class="bg-blue-600 hover:bg-blue-700 font-semibold rounded-lg px-6 py-3 shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-500/60 neon-blue text-white">Novo Lead</button>
-      </div>
-    </section>
-
-    <!-- Stats Overview -->
-    <section class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10">
-      <div class="stat-card"><div class="text-3xl font-bold neon-blue mb-2">24</div><div>Leads Hoje</div></div>
-      <div class="stat-card"><div class="text-3xl font-bold neon-purple mb-2">156</div><div>Leads Semana</div></div>
-      <div class="stat-card"><div class="text-3xl font-bold text-yellow-500 mb-2">42%</div><div>Taxa Conversão</div></div>
-      <div class="stat-card"><div class="text-3xl font-bold text-green-500 mb-2">18</div><div>Fechamentos</div></div>
-    </section>
-
-    <!-- Filter Section -->
-    <section class="filter-section mb-10">
-      <h2 class="text-xl font-semibold neon-purple mb-4">Filtrar Leads</h2>
-      <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <div>
-          <label class="block mb-2 text-gray-900">Status</label>
-          <select id="filter-status" class="w-full rounded-md bg-white border border-gray-300 focus:border-purple-600 text-gray-900 px-3 py-2 outline-none">
-            <option value="">Todos</option>
-            <option value="novo">Novo</option>
-            <option value="contato">Em Contato</option>
-            <option value="proposta">Proposta Enviada</option>
-            <option value="fechado">Fechado</option>
-          </select>
-        </div>
-        <div>
-          <label class="block mb-2 text-gray-900">Data Início</label>
-          <input type="date" class="w-full rounded-md bg-white border border-gray-300 focus:border-purple-600 text-gray-900 px-3 py-2 outline-none" />
-        </div>
-        <div>
-          <label class="block mb-2 text-gray-900">Data Fim</label>
-          <input type="date" class="w-full rounded-md bg-white border border-gray-300 focus:border-purple-600 text-gray-900 px-3 py-2 outline-none" />
-        </div>
-        <div>
-          <label class="block mb-2 text-gray-900">Buscar</label>
-          <input id="filter-search" type="text" placeholder="Nome ou email..." class="w-full rounded-md bg-white border border-gray-300 focus:border-purple-600 text-gray-900 px-3 py-2 outline-none" />
-        </div>
-      </div>
-      <div class="mt-4 flex justify-end">
-        <button id="btn-apply-filters" class="btn-neon font-semibold rounded-lg px-6 py-2 shadow-lg focus:outline-none focus:ring-4 focus:ring-purple-500/60">Aplicar Filtros</button>
-      </div>
-    </section>
-
-    <!-- Leads List -->
-    <section id="leads" aria-label="Leads recentes" class="leads-list mb-8">
-      <!-- Cada lead tem checkbox, dados e área de comentários (oculta por padrão) -->
-      <article class="lead-note" data-id="1">
-        <input type="checkbox" class="lead-select" title="Selecionar lead">
-        <div class="lead-meta">
-          <h3>Ana Silva</h3>
-          <p><strong>Email:</strong> ana.silva@email.com</p>
-          <p><strong>Telefone:</strong> (11) 99999-9999</p>
-          <p class="message">Gostaria de saber mais sobre automação para minha empresa...</p>
-          <span class="status status-novo" data-status="novo">Novo</span>
-
-          <ul class="lead-comments hidden">
-            <li class="lead-comment">Enviou pergunta sobre integração (01/09)</li>
-          </ul>
-        </div>
-        <div class="actions">
-          <button class="btn-small btn-edit">Editar</button>
-          <button class="btn-small btn-detalhes">Detalhes</button>
-          <button class="btn-small btn-delete">Excluir</button>
-        </div>
-      </article>
-
-      <article class="lead-note" data-id="2">
-        <input type="checkbox" class="lead-select" title="Selecionar lead">
-        <div class="lead-meta">
-          <h3>Carlos Oliveira</h3>
-          <p><strong>Email:</strong> carlos.oliveira@empresa.com</p>
-          <p><strong>Telefone:</strong> (21) 98888-8888</p>
-          <p class="message">Preciso de integração entre WhatsApp e CRM...</p>
-          <span class="status status-contato" data-status="contato">Em Contato</span>
-
-          <ul class="lead-comments hidden">
-            <li class="lead-comment">Pediu orçamento via WhatsApp</li>
-          </ul>
-        </div>
-        <div class="actions">
-          <button class="btn-small btn-edit">Editar</button>
-          <button class="btn-small btn-detalhes">Detalhes</button>
-          <button class="btn-small btn-delete">Excluir</button>
-        </div>
-      </article>
-
-      <article class="lead-note" data-id="3">
-        <input type="checkbox" class="lead-select" title="Selecionar lead">
-        <div class="lead-meta">
-          <h3>Mariana Santos</h3>
-          <p><strong>Email:</strong> mariana.santos@tech.com</p>
-          <p><strong>Telefone:</strong> (31) 97777-7777</p>
-          <p class="message">Interessada em fluxos personalizados no n8n...</p>
-          <span class="status status-proposta" data-status="proposta">Proposta Enviada</span>
-
-          <ul class="lead-comments hidden">
-            <li class="lead-comment">Quer teste gratuito</li>
-          </ul>
-        </div>
-        <div class="actions">
-          <button class="btn-small btn-edit">Editar</button>
-          <button class="btn-small btn-detalhes">Detalhes</button>
-          <button class="btn-small btn-delete">Excluir</button>
-        </div>
-      </article>
-
-      <article class="lead-note" data-id="4">
-        <input type="checkbox" class="lead-select" title="Selecionar lead">
-        <div class="lead-meta">
-          <h3>Roberto Almeida</h3>
-          <p><strong>Email:</strong> roberto.almeida@negocios.com</p>
-          <p><strong>Telefone:</strong> (47) 96666-6666</p>
-          <p class="message">Ótimo atendimento, fechamos o contrato!</p>
-          <span class="status status-fechado" data-status="fechado">Fechado</span>
-
-          <ul class="lead-comments hidden">
-            <li class="lead-comment">Contrato assinado em 20/08</li>
-          </ul>
-        </div>
-        <div class="actions">
-          <button class="btn-small btn-edit">Editar</button>
-          <button class="btn-small btn-detalhes">Detalhes</button>
-          <button class="btn-small btn-delete">Excluir</button>
-        </div>
-      </article>
-    </section>
-
-    <!-- Pagination -->
-    <section class="pagination" aria-label="Navegação de Leads">
-      <button class="pagination-btn" disabled>Anterior</button>
-      <span class="pagination-info">Página 1</span>
-      <button class="pagination-btn">Próximo</button>
-    </section>
-
-  </main>
-
-  <footer class="bg-[#1e293b] text-white text-center py-4 mt-auto">
-    <p>&copy; 2025 Virtuallure. Todos os direitos reservados.</p>
-  </footer>
-
-  <!-- MODALS -->
-  <!-- Modal Detalhes -->
-  <div id="modal-detalhes" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-    <div class="bg-white p-6 rounded-lg w-96 shadow-xl max-h-[80vh] overflow-auto">
-      <h2 class="text-xl font-bold mb-4">Detalhes do Lead</h2>
-      <div id="detalhes-content" class="space-y-2"></div>
-
-      <div class="mt-4">
-        <h3 class="font-semibold">Comentários</h3>
-        <ul id="detalhes-comments-list" class="lead-comments mt-2"></ul>
-
-        <div class="mt-3 flex gap-2">
-          <input id="new-comment-input" type="text" placeholder="Adicionar comentário..." class="w-full border px-3 py-2 rounded" />
-          <button id="btn-add-comment" class="btn-primary">Adicionar</button>
-        </div>
-      </div>
-
-      <div class="mt-4 flex justify-end gap-2">
-        <button onclick="closeModal('modal-detalhes')" class="bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded">Fechar</button>
-      </div>
-    </div>
+<!-- Header -->
+<header class="fixed top-0 left-0 w-full bg-[#1e293b] border-b border-[#334155] z-50 shadow">
+  <div class="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
+    <a href="/" class="flex items-center space-x-2 select-none" aria-label="Virtuallure - Home">
+      <svg class="w-10 h-10 neon-purple" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+        <path d="M2 17l10 5 10-5"></path>
+        <path d="M2 12l10 5 10-5"></path>
+      </svg>
+      <span class="text-2xl font-orbitron font-bold neon-purple">Virtuallure</span>
+    </a>
+    <nav class="hidden md:block" aria-label="Menu principal">
+      <ul class="flex space-x-8 font-semibold tracking-wide text-lg">
+        <li><a href="https://virtuallure.com.br" class="neon-link" target="_blank">Home</a></li>
+        <li><a href="#dashboard" class="neon-link">Dashboard</a></li>
+        <li><a href="#leads" class="neon-link">Leads</a></li>
+        <li><a href="#funil" class="neon-link">Funil</a></li>
+      </ul>
+    </nav>
+    <button class="md:hidden text-white hover:text-purple-300 focus:outline-none focus:text-purple-300" aria-label="Abrir menu" aria-expanded="false" id="menu-toggle">
+      <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"></path>
+      </svg>
+    </button>
   </div>
+</header>
 
-  <!-- Modal Editar -->
-  <div id="modal-editar" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-    <div class="bg-white p-6 rounded-lg w-96 shadow-xl">
-      <h2 class="text-xl font-bold mb-4">Editar Lead</h2>
-      <form id="form-editar" class="space-y-3">
-        <input type="text" id="edit-nome" class="w-full border px-3 py-2 rounded" placeholder="Nome" required>
-        <input type="email" id="edit-email" class="w-full border px-3 py-2 rounded" placeholder="Email" required>
-        <input type="text" id="edit-telefone" class="w-full border px-3 py-2 rounded" placeholder="Telefone">
-        <textarea id="edit-msg" class="w-full border px-3 py-2 rounded" placeholder="Mensagem"></textarea>
-        <select id="edit-status" class="w-full border px-3 py-2 rounded">
+<main class="flex-grow pt-24 pb-12 max-w-7xl mx-auto px-6">
+
+  <!-- Dashboard Header -->
+  <section id="dashboard" class="mb-8 flex flex-col md:flex-row justify-between items-center gap-4">
+    <h1 class="text-3xl md:text-4xl font-orbitron font-bold neon-blue">Dashboard CRM</h1>
+    <div class="flex space-x-4">
+      <button id="btn-delete-selected" class="btn-neon btn-delete font-semibold rounded-lg px-6 py-3 shadow-lg focus:outline-none focus:ring-4 focus:ring-red-500/60">Excluir Selecionados</button>
+      <button id="btn-export" class="btn-neon font-semibold rounded-lg px-6 py-3 shadow-lg focus:outline-none focus:ring-4 focus:ring-purple-500/60">Exportar Dados</button>
+      <button id="btn-new-lead" class="bg-blue-600 hover:bg-blue-700 font-semibold rounded-lg px-6 py-3 shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-500/60 neon-blue text-white">Novo Lead</button>
+    </div>
+  </section>
+
+  <!-- Stats Overview -->
+  <section class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10">
+    <div class="stat-card"><div class="text-3xl font-bold neon-blue mb-2" id="leads-hoje">24</div><div>Leads Hoje</div></div>
+    <div class="stat-card"><div class="text-3xl font-bold neon-purple mb-2" id="leads-semana">156</div><div>Leads Semana</div></div>
+    <div class="stat-card"><div class="text-3xl font-bold text-yellow-500 mb-2" id="taxa-conversao">42%</div><div>Taxa Conversão</div></div>
+    <div class="stat-card"><div class="text-3xl font-bold text-green-500 mb-2" id="fechamentos">18</div><div>Fechamentos</div></div>
+  </section>
+
+  <!-- Filter Section -->
+  <section class="filter-section mb-10">
+    <h2 class="text-xl font-semibold neon-purple mb-4">Filtrar Leads</h2>
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div>
+        <label class="block mb-2 text-gray-900">Status</label>
+        <select id="filter-status" class="w-full rounded-md bg-white border border-gray-300 focus:border-purple-600 text-gray-900 px-3 py-2 outline-none">
+          <option value="">Todos</option>
           <option value="novo">Novo</option>
           <option value="contato">Em Contato</option>
           <option value="proposta">Proposta Enviada</option>
           <option value="fechado">Fechado</option>
         </select>
-        <div class="flex justify-end gap-2">
-          <button type="button" onclick="closeModal('modal-editar')" class="bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded">Cancelar</button>
-          <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">Salvar</button>
-        </div>
-      </form>
+      </div>
+      <div>
+        <label class="block mb-2 text-gray-900">Data Início</label>
+        <input type="date" class="w-full rounded-md bg-white border border-gray-300 focus:border-purple-600 text-gray-900 px-3 py-2 outline-none" />
+      </div>
+      <div>
+        <label class="block mb-2 text-gray-900">Data Fim</label>
+        <input type="date" class="w-full rounded-md bg-white border border-gray-300 focus:border-purple-600 text-gray-900 px-3 py-2 outline-none" />
+      </div>
+      <div>
+        <label class="block mb-2 text-gray-900">Buscar</label>
+        <input id="filter-search" type="text" placeholder="Nome ou email..." class="w-full rounded-md bg-white border border-gray-300 focus:border-purple-600 text-gray-900 px-3 py-2 outline-none" />
+      </div>
+    </div>
+    <div class="mt-4 flex justify-end">
+      <button id="btn-apply-filters" class="btn-neon font-semibold rounded-lg px-6 py-2 shadow-lg focus:outline-none focus:ring-4 focus:ring-purple-500/60">Aplicar Filtros</button>
+    </div>
+  </section>
+
+  <!-- Leads List -->
+  <section id="leads" aria-label="Leads recentes" class="leads-list mb-8">
+    <!-- Leads serão inseridos dinamicamente via JS -->
+  </section>
+
+  <!-- Pagination -->
+  <section class="pagination" aria-label="Navegação de Leads">
+    <button class="pagination-btn" disabled>Anterior</button>
+    <span class="pagination-info">Página 1</span>
+    <button class="pagination-btn">Próximo</button>
+  </section>
+
+</main>
+
+<footer class="bg-[#1e293b] text-white text-center py-4 mt-auto">
+  <p>&copy; 2025 Virtuallure. Todos os direitos reservados.</p>
+</footer>
+
+<!-- Modais -->
+<!-- Modal Detalhes -->
+<div id="modal-detalhes" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+  <div class="bg-white p-6 rounded-lg w-96 shadow-xl max-h-[80vh] overflow-auto">
+    <h2 class="text-xl font-bold mb-4">Detalhes do Lead</h2>
+    <div id="detalhes-content" class="space-y-2"></div>
+    <div class="mt-4">
+      <h3 class="font-semibold">Comentários</h3>
+      <ul id="detalhes-comments-list" class="lead-comments mt-2"></ul>
+      <div class="mt-3 flex gap-2">
+        <input id="new-comment-input" type="text" placeholder="Adicionar comentário..." class="w-full border px-3 py-2 rounded" />
+        <button id="btn-add-comment" class="btn-primary">Adicionar</button>
+      </div>
+    </div>
+    <div class="mt-4 flex justify-end gap-2">
+      <button onclick="closeModal('modal-detalhes')" class="bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded">Fechar</button>
     </div>
   </div>
+</div>
 
-  <script type="module" src="../js/dashboard.js"></script>
-  <script>
-/* =============== ELEMENTOS =============== */
-const leadsContainer = document.getElementById("leads");
-const btnNewLead = document.getElementById("btn-new-lead");
-const btnExport = document.getElementById("btn-export");
-const btnDeleteSelected = document.getElementById("btn-delete-selected");
+<!-- Modal Editar -->
+<div id="modal-editar" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+  <div class="bg-white p-6 rounded-lg w-96 shadow-xl">
+    <h2 class="text-xl font-bold mb-4">Editar Lead</h2>
+    <form id="form-editar" class="space-y-3">
+      <input type="text" id="edit-nome" class="w-full border px-3 py-2 rounded" placeholder="Nome" required>
+      <input type="email" id="edit-email" class="w-full border px-3 py-2 rounded" placeholder="Email" required>
+      <input type="text" id="edit-telefone" class="w-full border px-3 py-2 rounded" placeholder="Telefone">
+      <textarea id="edit-msg" class="w-full border px-3 py-2 rounded" placeholder="Mensagem"></textarea>
+      <select id="edit-status" class="w-full border px-3 py-2 rounded">
+        <option value="novo">Novo</option>
+        <option value="contato">Em Contato</option>
+        <option value="proposta">Proposta Enviada</option>
+        <option value="fechado">Fechado</option>
+      </select>
+      <div class="flex justify-end gap-2">
+        <button type="button" onclick="closeModal('modal-editar')" class="bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded">Cancelar</button>
+        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">Salvar</button>
+      </div>
+    </form>
+  </div>
+</div>
 
-const filterStatus = document.getElementById("filter-status");
-const filterSearch = document.getElementById("filter-search");
-const btnApplyFilters = document.getElementById("btn-apply-filters");
-
-const modalDetalhes = document.getElementById("modal-detalhes");
-const detalhesContent = document.getElementById("detalhes-content");
-const detalhesCommentsList = document.getElementById("detalhes-comments-list");
-const newCommentInput = document.getElementById("new-comment-input");
-const btnAddComment = document.getElementById("btn-add-comment");
-
-const modalEditar = document.getElementById("modal-editar");
-const formEditar = document.getElementById("form-editar");
-const editNome = document.getElementById("edit-nome");
-const editEmail = document.getElementById("edit-email");
-const editTelefone = document.getElementById("edit-telefone");
-const editMsg = document.getElementById("edit-msg");
-const editStatus = document.getElementById("edit-status");
-
-let currentLead = null;
-
-/* =============== FUNÇÕES AUX =============== */
-function openModal(el) {
-  if (typeof el === 'string') {
-    const node = document.getElementById(el);
-    node.classList.remove("hidden");
-  } else {
-    el.classList.remove("hidden");
-  }
-}
-function closeModal(el) {
-  if (typeof el === 'string') {
-    const node = document.getElementById(el);
-    node.classList.add("hidden");
-  } else {
-    el.classList.add("hidden");
-  }
-}
-
-/* fecha modal ao clicar fora do conteúdo */
-[modalDetalhes, modalEditar].forEach(modal => {
-  modal.addEventListener("click", (e) => {
-    if (e.target === modal) closeModal(modal.id);
-  });
-});
-/* fecha com ESC */
-document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape") {
-    closeModal("modal-detalhes");
-    closeModal("modal-editar");
-  }
-});
-
-/* =============== CRIAR / ANEXAR EVENTOS =============== */
-function attachLeadEvents(lead) {
-  const btnDetalhes = lead.querySelector(".btn-detalhes");
-  const btnEdit = lead.querySelector(".btn-edit");
-  const btnDelete = lead.querySelector(".btn-delete");
-
-  // Detalhes (mostra comentários e detalhes)
-  btnDetalhes.addEventListener("click", () => {
-    currentLead = lead;
-    const nome = lead.querySelector("h3").textContent;
-    const email = lead.querySelectorAll("p")[0].textContent.replace("Email: ","");
-    const telefone = lead.querySelectorAll("p")[1].textContent.replace("Telefone: ","");
-    const mensagem = lead.querySelector(".message").textContent;
-    const statusEl = lead.querySelector(".status");
-    const statusText = statusEl ? statusEl.textContent : "";
-
-    detalhesContent.innerHTML = `
-      <p><strong>Nome:</strong> ${nome}</p>
-      <p><strong>Email:</strong> ${email}</p>
-      <p><strong>Telefone:</strong> ${telefone}</p>
-      <p><strong>Mensagem:</strong> ${mensagem}</p>
-      <p><strong>Status:</strong> ${statusText}</p>
-    `;
-
-    // popula lista de comentários (vindo do article)
-    detalhesCommentsList.innerHTML = "";
-    const comments = lead.querySelectorAll(".lead-comment");
-    if (comments.length === 0) {
-      detalhesCommentsList.innerHTML = "<li class='text-sm text-gray-500'>Sem comentários</li>";
-    } else {
-      comments.forEach(c => {
-        const li = document.createElement("li");
-        li.textContent = c.textContent;
-        detalhesCommentsList.appendChild(li);
-      });
-    }
-
-    newCommentInput.value = "";
-    openModal("modal-detalhes");
-    newCommentInput.focus();
-  });
-
-  // Editar
-  btnEdit.addEventListener("click", () => {
-    currentLead = lead;
-    editNome.value = lead.querySelector("h3").textContent;
-    editEmail.value = lead.querySelectorAll("p")[0].textContent.replace("Email: ","");
-    editTelefone.value = lead.querySelectorAll("p")[1].textContent.replace("Telefone: ","");
-    editMsg.value = lead.querySelector(".message").textContent;
-
-    const statusValue = lead.querySelector(".status")?.dataset?.status || "novo";
-    editStatus.value = statusValue;
-    openModal("modal-editar");
-  });
-
-  // Excluir (botão do próprio lead)
-  btnDelete.addEventListener("click", () => {
-    if (confirm("Deseja realmente excluir este lead?")) {
-      lead.remove();
-    }
-  });
-}
-
-/* anexa eventos iniciais */
-document.querySelectorAll(".lead-note").forEach(lead => attachLeadEvents(lead));
-
-/* =============== NOVO LEAD =============== */
-btnNewLead.addEventListener("click", () => {
-  const nome = prompt("Digite o nome do novo lead:");
-  if (!nome) return;
-
-  const id = Date.now();
-  const newLead = document.createElement("article");
-  newLead.className = "lead-note";
-  newLead.dataset.id = id;
-  newLead.innerHTML = `
-    <input type="checkbox" class="lead-select" title="Selecionar lead">
-    <div class="lead-meta">
-      <h3>${nome}</h3>
-      <p><strong>Email:</strong> email@exemplo.com</p>
-      <p><strong>Telefone:</strong> (00) 00000-0000</p>
-      <p class="message">Mensagem de exemplo</p>
-      <span class="status status-novo" data-status="novo">Novo</span>
-      <ul class="lead-comments hidden"></ul>
-    </div>
-    <div class="actions">
-      <button class="btn-small btn-edit">Editar</button>
-      <button class="btn-small btn-detalhes">Detalhes</button>
-      <button class="btn-small btn-delete">Excluir</button>
-    </div>
-  `;
-  leadsContainer.appendChild(newLead);
-  attachLeadEvents(newLead);
-});
-
-/* =============== SALVAR EDIÇÃO =============== */
-formEditar.addEventListener("submit", (e) => {
-  e.preventDefault();
-  if (!currentLead) return;
-
-  currentLead.querySelector("h3").textContent = editNome.value;
-  currentLead.querySelectorAll("p")[0].innerHTML = `<strong>Email:</strong> ${editEmail.value}`;
-  currentLead.querySelectorAll("p")[1].innerHTML = `<strong>Telefone:</strong> ${editTelefone.value}`;
-  currentLead.querySelector(".message").textContent = editMsg.value;
-
-  const statusEl = currentLead.querySelector(".status");
-  const newStatus = editStatus.value; // novo, contato, proposta, fechado
-  if (statusEl) {
-    statusEl.dataset.status = newStatus;
-    statusEl.className = "status status-" + newStatus;
-    // texto amigável
-    const textMap = { novo: "Novo", contato: "Em Contato", proposta: "Proposta Enviada", fechado: "Fechado" };
-    statusEl.textContent = textMap[newStatus] || newStatus;
-  } else {
-    const span = document.createElement("span");
-    span.className = "status status-" + newStatus;
-    span.dataset.status = newStatus;
-    span.textContent = newStatus;
-    currentLead.querySelector(".lead-meta").appendChild(span);
-  }
-
-  closeModal("modal-editar");
-});
-
-/* =============== ADICIONAR COMENTÁRIO =============== */
-btnAddComment.addEventListener("click", () => {
-  if (!currentLead) return;
-  const text = newCommentInput.value.trim();
-  if (!text) return alert("Digite um comentário antes.");
-  // adiciona no article
-  const ul = currentLead.querySelector(".lead-comments");
-  const liArticle = document.createElement("li");
-  liArticle.className = "lead-comment";
-  liArticle.textContent = text;
-  ul.appendChild(liArticle);
-  ul.classList.remove("hidden");
-
-  // adiciona na modal (lista visível)
-  const liModal = document.createElement("li");
-  liModal.textContent = text;
-  if (detalhesCommentsList.querySelector("li") && detalhesCommentsList.querySelector("li").textContent === "Sem comentários") {
-    detalhesCommentsList.innerHTML = "";
-  }
-  detalhesCommentsList.appendChild(liModal);
-
-  newCommentInput.value = "";
-  newCommentInput.focus();
-});
-
-/* permitir pressionar Enter para adicionar comentário */
-newCommentInput.addEventListener("keydown", (e) => {
-  if (e.key === "Enter") {
-    e.preventDefault();
-    btnAddComment.click();
-  }
-});
-
-/* =============== EXPORTAR =============== */
-btnExport.addEventListener("click", () => {
-  const data = Array.from(document.querySelectorAll(".lead-note")).map(lead => {
-    const nome = lead.querySelector("h3").textContent;
-    const email = lead.querySelectorAll("p")[0].textContent.replace("Email: ","");
-    const telefone = lead.querySelectorAll("p")[1].textContent.replace("Telefone: ","");
-    const mensagem = lead.querySelector(".message").textContent;
-    const status = lead.querySelector(".status")?.dataset?.status || "";
-    const comments = Array.from(lead.querySelectorAll(".lead-comment")).map(c => c.textContent);
-    return { nome, email, telefone, mensagem, status, comments };
-  });
-
-  const json = JSON.stringify(data, null, 2);
-  const blob = new Blob([json], { type: "application/json" });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = "leads.json";
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-  URL.revokeObjectURL(url);
-  console.log("Leads exportados:", data);
-  alert("Arquivo leads.json gerado (download).");
-});
-
-/* =============== EXCLUIR SELECIONADOS =============== */
-btnDeleteSelected.addEventListener("click", () => {
-  const checked = Array.from(document.querySelectorAll(".lead-select:checked"));
-  if (checked.length === 0) return alert("Nenhum lead selecionado.");
-  if (!confirm(`Deseja excluir ${checked.length} lead(s) selecionado(s)?`)) return;
-  checked.forEach(chk => {
-    const article = chk.closest(".lead-note");
-    if (article) article.remove();
-  });
-});
-
-/* =============== FILTROS (status + busca) =============== */
-function applyFilters() {
-  const status = filterStatus.value; // '' or 'novo' etc
-  const q = filterSearch.value.trim().toLowerCase();
-
-  document.querySelectorAll(".lead-note").forEach(lead => {
-    const statusValue = lead.querySelector(".status")?.dataset?.status || "";
-    const name = lead.querySelector("h3").textContent.toLowerCase();
-    const email = lead.querySelectorAll("p")[0].textContent.toLowerCase();
-
-    const matchesStatus = !status || statusValue === status;
-    const matchesQuery = !q || name.includes(q) || email.includes(q);
-
-    lead.style.display = (matchesStatus && matchesQuery) ? "" : "none";
-  });
-}
-
-filterStatus.addEventListener("change", applyFilters);
-filterSearch.addEventListener("input", applyFilters);
-btnApplyFilters.addEventListener("click", applyFilters);
-
-/* =============== BOAS PRÁTICAS / INICIALIZAÇÃO =============== */
-/* caso você queira selecionar todos rapidamente, poderia adicionar um "select all" no futuro */
-/* inicial: garante que botões adicionados dinamicamente tenham eventos (já chamamos attachLeadEvents ao criar novo lead) */
-
-</script>
-<script>
-async function carregarStats() {
-  try {
-    const res = await fetch("/api/stats");
-    const data = await res.json();
-
-    document.getElementById("leads-hoje").textContent = data.leadsHoje;
-    document.getElementById("leads-semana").textContent = data.leadsSemana;
-    document.getElementById("taxa-conversao").textContent = data.taxaConversao;
-    document.getElementById("fechamentos").textContent = data.fechamentos;
-  } catch (err) {
-    console.error("Erro ao carregar estatísticas:", err);
-  }
-}
-
-document.addEventListener("DOMContentLoaded", carregarStats);
+<script type="module" src="js/dashboard.js"></script>
+<script type="module">
+/* Aqui você pode inserir a versão limpa do seu JS (mesmo que já detalhou acima) */
 </script>
 
 </body>
 </html>
+
 
 
 
