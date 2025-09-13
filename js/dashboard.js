@@ -1,29 +1,20 @@
-// Seletores
 const leadsList = document.querySelector(".leads-list");
-const prevBtn = document.querySelector(".pagination-btn:first-child");
-const nextBtn = document.querySelector(".pagination-btn:last-child");
-const pageInfo = document.querySelector(".pagination-info");
 
-let currentPage = 1;
-const limit = 5; // leads por página
-
-// Função para buscar leads da API
-async function fetchLeads(page = 1) {
+// Função que busca do banco (via API)
+async function fetchLeads() {
   try {
-    const res = await fetch(`/api/leads?page=${page}&limit=${limit}`);
-    const data = await res.json();
-
-    renderLeads(data.leads);
-    updatePagination(data.leads.length);
+    const res = await fetch("/api/leads");
+    const leads = await res.json();
+    renderLeads(leads);
   } catch (err) {
-    console.error("Erro ao buscar leads:", err);
+    console.error("Erro ao carregar leads:", err);
     leadsList.innerHTML = "<p class='text-red-500'>Erro ao carregar leads.</p>";
   }
 }
 
-// Função para renderizar os leads no formato lead-note
+// Função que renderiza no HTML
 function renderLeads(leads) {
-  leadsList.innerHTML = "";
+  leadsList.innerHTML = ""; // limpa antes
 
   if (!leads || leads.length === 0) {
     leadsList.innerHTML = "<p>Nenhum lead encontrado.</p>";
@@ -31,11 +22,11 @@ function renderLeads(leads) {
   }
 
   leads.forEach((lead) => {
-    const card = document.createElement("article");
-    card.className = "lead-note";
-    card.dataset.id = lead.id;
+    const article = document.createElement("article");
+    article.className = "lead-note";
+    article.dataset.id = lead.id;
 
-    card.innerHTML = `
+    article.innerHTML = `
       <input type="checkbox" class="lead-select" title="Selecionar lead">
       <div class="lead-meta">
         <h3>${lead.nome}</h3>
@@ -45,9 +36,12 @@ function renderLeads(leads) {
         <span class="status status-${lead.status}" data-status="${lead.status}">
           ${formatarStatus(lead.status)}
         </span>
-
         <ul class="lead-comments hidden">
-          ${lead.comentarios ? lead.comentarios.map(c => `<li class="lead-comment">${c}</li>`).join("") : ""}
+          ${
+            lead.comentarios
+              ? lead.comentarios.map(c => `<li class="lead-comment">${c}</li>`).join("")
+              : ""
+          }
         </ul>
       </div>
       <div class="actions">
@@ -57,11 +51,11 @@ function renderLeads(leads) {
       </div>
     `;
 
-    leadsList.appendChild(card);
+    leadsList.appendChild(article);
   });
 }
 
-// Função para exibir o nome do status
+// Traduz o status para exibir bonito
 function formatarStatus(status) {
   switch (status) {
     case "novo": return "Novo";
@@ -72,26 +66,7 @@ function formatarStatus(status) {
   }
 }
 
-// Atualiza estado dos botões de paginação
-function updatePagination(fetchedLength) {
-  prevBtn.disabled = currentPage === 1;
-  nextBtn.disabled = fetchedLength < limit;
-  pageInfo.textContent = `Página ${currentPage}`;
-}
+// Carregar quando a página abrir
+fetchLeads();
 
-// Eventos de paginação
-prevBtn.addEventListener("click", () => {
-  if (currentPage > 1) {
-    currentPage--;
-    fetchLeads(currentPage);
-  }
-});
-
-nextBtn.addEventListener("click", () => {
-  currentPage++;
-  fetchLeads(currentPage);
-});
-
-// Inicializar
-fetchLeads(currentPage);
 
