@@ -15,7 +15,7 @@ export default async function handler(req, res) {
       .from("leads")
       .select("*")
       .range(from, to)
-      .order("id", { ascending: false });
+      .order("lead_id", { ascending: false });
 
     if (error) return res.status(500).json({ message: error.message });
     return res.status(200).json({ leads: data });
