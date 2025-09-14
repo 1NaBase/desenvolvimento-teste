@@ -1,0 +1,83 @@
+// ====== ELEMENTOS PRINCIPAIS ======
+const leadsContainer = document.getElementById("leads");
+const btnNewLead = document.getElementById("btn-new-lead");
+const modalDetalhes = document.getElementById("modal-detalhes");
+const detalhesContent = document.getElementById("detalhes-content");
+const btnCloseModal = document.getElementById("btn-close-modal");
+
+// ====== VARIÁVEIS ======
+let leadsData = [];
+let currentLead = null;
+
+// ====== FUNÇÃO DE RENDERIZAÇÃO ======
+function renderLeads() {
+    leadsContainer.innerHTML = "";
+
+    leadsData.forEach(lead => {
+        const article = document.createElement("article");
+        article.className = "lead-note";
+        article.dataset.id = lead.id;
+        article.innerHTML = `
+            <h3>${lead.nome}</h3>
+            <p>Email: ${lead.email}</p>
+            <p>Telefone: ${lead.telefone}</p>
+            <p>Status: ${lead.status}</p>
+        `;
+        leadsContainer.appendChild(article);
+
+        // Abrir modal ao clicar no lead
+        article.addEventListener("click", () => openLeadModal(lead));
+    });
+}
+
+// ====== MODAL ======
+function openLeadModal(lead) {
+    currentLead = lead;
+    detalhesContent.innerHTML = `
+        <h3>${lead.nome}</h3>
+        <p><strong>Email:</strong> ${lead.email}</p>
+        <p><strong>Telefone:</strong> ${lead.telefone}</p>
+        <p><strong>Status:</strong> ${lead.status}</p>
+        <button id="btn-delete-lead">Excluir Lead</button>
+    `;
+    modalDetalhes.classList.remove("hidden");
+
+    // Botão de excluir dentro do modal
+    document.getElementById("btn-delete-lead").addEventListener("click", () => {
+        leadsData = leadsData.filter(l => l.id !== lead.id);
+        closeModal();
+        renderLeads();
+    });
+}
+
+function closeModal() {
+    modalDetalhes.classList.add("hidden");
+    currentLead = null;
+}
+
+// Fechar modal com botão
+btnCloseModal.addEventListener("click", closeModal);
+
+// Fechar modal com ESC
+document.addEventListener("keydown", e => { if(e.key === "Escape") closeModal(); });
+
+// ====== EVENTOS ======
+btnNewLead.addEventListener("click", () => {
+    const nome = prompt("Digite o nome do novo lead:");
+    if(!nome) return;
+    const newLead = {
+        id: Date.now(),
+        nome,
+        email: "email@exemplo.com",
+        telefone: "(00) 00000-0000",
+        status: "novo"
+    };
+    leadsData.unshift(newLead);
+    renderLeads();
+});
+
+// ====== INICIALIZAÇÃO ======
+document.addEventListener("DOMContentLoaded", () => {
+    leadsData = []; // Pode buscar do backend aqui
+    renderLeads();
+});
