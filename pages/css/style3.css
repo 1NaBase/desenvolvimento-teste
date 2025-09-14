@@ -1,0 +1,13 @@
+.lead-note { display: flex; align-items: flex-start; gap: 12px; padding: 12px; border: 1px solid #e5e7eb; border-radius: 8px; margin-bottom: 12px; }
+.lead-meta { flex: 1; }
+.actions { display:flex; gap:8px; align-items:center; }
+.lead-comments { margin-top:8px; padding-left: 18px; }
+.btn-small { background:#f3f4f6; padding:6px 10px; border-radius:6px; font-size:14px; }
+.btn-danger { background:#ef4444; color:white; padding:6px 10px; border-radius:6px; }
+.btn-primary { background:#2563eb; color:white; padding:6px 10px; border-radius:6px; }
+.status { font-weight:600; padding:4px 8px; border-radius:999px; font-size:13px; display:inline-block; }
+.status-novo { background:#eef2ff; color:#3730a3; }
+.status-contato { background:#fff7ed; color:#92400e; }
+.status-proposta { background:#fef3c7; color:#78350f; }
+.status-fechado { background:#ecfdf5; color:#065f46; }
+.lead-select { transform: scale(1.1); }
