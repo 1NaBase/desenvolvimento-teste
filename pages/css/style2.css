@@ -1,3 +1,4 @@
+/* ======= LEADS ======= */
 .leads-list {
   max-width: 1200px;
   margin: 0 auto 3rem;
@@ -14,12 +15,12 @@
   padding: 1rem 1.25rem;
   box-shadow: 0 8px 15px rgba(167, 139, 250, 0.3), 0 0 10px #a78bfaaa;
   color: #e0e7ff;
-  font-size: 0.7rem;
-  transition: box-shadow 0.3s ease, transform 0.2s ease;
+  font-size: 0.75rem;
   display: flex;
   flex-direction: column;
   gap: 0.4rem;
-  min-height: 250px; /* 🔹 todos os cards terão o mesmo tamanho mínimo */
+  transition: box-shadow 0.3s ease, transform 0.2s ease;
+  min-height: 260px; /* altura mínima uniforme */
 }
 
 .lead-note:hover {
@@ -32,17 +33,19 @@
   font-size: 1.1rem;
   color: #c4b5fd;
   margin-bottom: 0.3rem;
+  word-break: break-word;
 }
 
 .lead-note p {
   margin: 0;
-  word-break: break-word; /* 🔹 evita email estourar fora do box */
+  word-break: break-word;
 }
 
 .lead-note .message {
   font-style: italic;
   color: #9ca3af;
   margin-top: 0.3rem;
+  word-break: break-word;
 }
 
 .lead-note .status {
@@ -61,55 +64,74 @@
 .status-proposta { background-color: #f59e0b; }
 .status-fechado { background-color: #10b981; }
 
-/* Ações alinhadas no rodapé */
+/* Actions buttons aligned at bottom */
 .lead-note .actions {
-  margin-top: auto; /* 🔹 garante que vá pro fim do card */
+  margin-top: auto; /* força ir para o final do card */
   display: flex;
   gap: 0.5rem;
-  justify-content: center; /* 🔹 centraliza botões */
-  flex-wrap: wrap; /* quebra se faltar espaço */
+  justify-content: space-between;
+  flex-wrap: nowrap;
 }
 
-/* Botão padrão */
+/* Small buttons - same width */
+.lead-note .actions .btn-small,
+.lead-note .actions .btn-secondary-small {
+  flex: 1;
+  min-width: 0; /* evita overflow */
+  text-align: center;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.3rem 0.8rem;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease, color 0.3s ease;
+}
+
+/* Primary small button */
 .btn-small {
   background-color: #a78bfa;
   color: white;
-  padding: 0.3rem 0.8rem;
-  border-radius: 0.375rem;
-  font-weight: 600;
-  font-size: 0.75rem;
-  transition: background-color 0.3s ease, box-shadow 0.3s ease;
-  border: none;
-  cursor: pointer;
-  box-shadow: none;
-  min-width: 80px; /* 🔹 garante largura padrão */
-  text-align: center;
+  box-shadow: 0 0 6px #a78bfaaa, 0 0 12px #a78bfaaa;
 }
-
 .btn-small:hover {
   background-color: #7c3aed;
   box-shadow: 0 0 8px #7c3aedcc;
 }
 
-/* Botão secundário */
+/* Secondary small button */
 .btn-secondary-small {
   background-color: #374151;
   color: #a78bfa;
   border: 1px solid #a78bfa;
-  padding: 0.3rem 0.8rem;
-  border-radius: 0.375rem;
-  font-weight: 600;
-  font-size: 0.75rem;
-  cursor: pointer;
-  transition: background-color 0.3s ease, color 0.3s ease;
-  min-width: 80px; /* 🔹 iguala tamanho */
-  text-align: center;
 }
-
 .btn-secondary-small:hover {
   background-color: #a78bfa;
   color: white;
 }
+
+/* Delete button (optional extra) */
+.btn-delete {
+  background-color: #ef4444;
+  color: white;
+  border-radius: 0.375rem;
+  padding: 0.3rem 0.8rem;
+}
+.btn-delete:hover {
+  background-color: #dc2626;
+}
+
+/* Responsividade */
+@media (max-width: 640px) {
+  .lead-note {
+    font-size: 0.7rem;
+    min-height: auto; /* permite que cards menores se ajustem */
+  }
+  .lead-note .actions {
+    flex-direction: column;
+  }
+}
+
 
 
 
