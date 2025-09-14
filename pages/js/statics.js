@@ -1,43 +1,58 @@
 // stats.js
-const leadsHoje = document.getElementById("leads-hoje");
-const leadsSemana = document.getElementById("leads-semana");
-const taxaConversao = document.getElementById("taxa-conversao");
-const fechamentos = document.getElementById("fechamentos");
 
+// Seleciona os elementos do HTML
+const leadsHojeEl = document.getElementById("leads-hoje");
+const leadsSemanaEl = document.getElementById("leads-semana");
+const taxaConversaoEl = document.getElementById("taxa-conversao");
+const fechamentosEl = document.getElementById("fechamentos");
+
+// Função para atualizar os cards
 async function atualizarStats() {
   try {
-    const res = await fetch("/api/leads?limit=1000"); // pega todos os leads
+    const res = await fetch("/api/leads"); // sua API de leads
     const data = await res.json();
     const leads = data.leads || [];
 
-    // Cálculo de leads de hoje
-    const hoje = new Date().toISOString().slice(0,10); // "YYYY-MM-DD"
-    const leadsHojeCount = leads.filter(l => l.created_at?.slice(0,10) === hoje).length;
+    const hoje = new Date();
+    const semana = hoje.getDay(); // dia da semana 0-6
 
-    // Leads da semana
-    const leadsSemanaCount = leads.filter(l => {
-      const d = new Date(l.created_at);
-      const now = new Date();
-      const diffDias = (now - d) / (1000*60*60*24);
-      return diffDias <= 7;
+    // Leads hoje
+    const leadsHoje = leads.filter(l => {
+      const createdAt = new Date(l.created_at || l.date); // ajuste conforme seu campo
+      return createdAt.toDateString() === hoje.toDateString();
     }).length;
 
-    // Fechamentos
-    const fechamentosCount = leads.filter(l => l.status === "fechado").length;
+    // Leads na semana (segunda a domingo)
+    const primeiroDiaSemana = new Date();
+    primeiroDiaSemana.setDate(hoje.getDate() - hoje.getDay()); // domingo
+    const ultimoDiaSemana = new Date();
+    ultimoDiaSemana.setDate(primeiroDiaSemana.getDate() + 6);
 
-    // Taxa de conversão (%)
-    const taxa = leads.length ? Math.round((fechamentosCount / leads.length) * 100) : 0;
+    const leadsSemana = leads.filter(l => {
+      const createdAt = new Date(l.created_at || l.date);
+      return createdAt >= primeiroDiaSemana && createdAt <= ultimoDiaSemana;
+    }).length;
 
-    // Atualiza os cards do HTML
-    leadsHoje.textContent = leadsHojeCount;
-    leadsSemana.textContent = leadsSemanaCount;
-    taxaConversao.textContent = taxa + "%";
-    fechamentos.textContent = fechamentosCount;
+    // Fechamentos (status = "fechado")
+    const fechamentos = leads.filter(l => l.status === "fechado").length;
+
+    // Taxa de conversão: fechamentos / total leads
+    const taxaConversao = leads.length ? Math.round((fechamentos / leads.length) * 100) : 0;
+
+    // Atualiza HTML
+    leadsHojeEl.textContent = leadsHoje;
+    leadsSemanaEl.textContent = leadsSemana;
+    fechamentosEl.textContent = fechamentos;
+    taxaConversaoEl.textContent = `${taxaConversao}%`;
 
   } catch(err) {
     console.error("Erro ao atualizar stats:", err);
   }
 }
 
-// Atualiza ao carregar a página
+// Atualiza os stats ao carregar a página
 document.addEventListener("DOMContentLoaded", atualizarStats);
+
+// Atualização automática a cada 30 segundos (opcional)
+setInterval(atualizarStats, 30000);
+
