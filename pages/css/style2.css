@@ -14,7 +14,7 @@
       padding: 1rem 1.25rem;
       box-shadow: 0 8px 15px rgba(167, 139, 250, 0.3), 0 0 10px #a78bfaaa;
       color: #e0e7ff;
-      font-size: 0.875rem;
+      font-size: 0.7rem;
       transition: box-shadow 0.3s ease, transform 0.2s ease;
       display: flex;
       flex-direction: column;
@@ -90,3 +90,4 @@
       background-color: #a78bfa;
       color: white;
     }
+
